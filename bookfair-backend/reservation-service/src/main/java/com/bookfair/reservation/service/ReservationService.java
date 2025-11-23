@@ -46,9 +46,14 @@ public class ReservationService {
         Reservation reservation = new Reservation();
         reservation.setUserId(userId);
         reservation.setStallIds(request.getStallIds());
-        reservation.setQrCode(qrCodeService.generateQRCode());
+        // Temporarily set empty QR code
+        reservation.setQrCode("");
 
         Reservation savedReservation = reservationRepository.save(reservation);
+
+        // Now generate QR code with the reservation ID
+        savedReservation.setQrCode(qrCodeService.generateQRCode(savedReservation.getId()));
+        savedReservation = reservationRepository.save(savedReservation);
 
         // Update stall availability
         request.getStallIds().forEach(stallId -> {
@@ -100,6 +105,13 @@ public class ReservationService {
     public ReservationResponse getReservationById(Long id) {
         Reservation reservation = reservationRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Reservation not found"));
+        return mapToReservationResponse(reservation);
+    }
+
+    @Transactional(readOnly = true)
+    public ReservationResponse getReservationByQRCode(String qrCode) {
+        Reservation reservation = reservationRepository.findByQrCode(qrCode)
+                .orElseThrow(() -> new RuntimeException("Invalid QR code"));
         return mapToReservationResponse(reservation);
     }
 
