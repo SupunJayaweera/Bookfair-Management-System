@@ -85,4 +85,25 @@ public class ReservationController {
             return ResponseEntity.badRequest().build();
         }
     }
+
+    @GetMapping("/verify-reservation")
+    public ResponseEntity<?> verifyReservation(@RequestParam String token, @RequestParam Long rid) {
+        try {
+            log.info("Verifying reservation - Token: {}, Reservation ID: {}", token, rid);
+            ReservationResponse reservation = reservationService.getReservationById(rid);
+
+            // Verify that the QR code contains the token
+            if (reservation.getQrCode() != null && reservation.getQrCode().contains(token)) {
+                return ResponseEntity.ok(reservation);
+            } else {
+                log.warn("Invalid token for reservation {}", rid);
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                        .body(Map.of("error", "Invalid QR code token"));
+            }
+        } catch (RuntimeException e) {
+            log.error("Reservation verification failed", e);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("error", "Reservation not found"));
+        }
+    }
 }
