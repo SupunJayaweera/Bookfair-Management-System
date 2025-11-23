@@ -1,6 +1,7 @@
 package com.bookfair.user.service;
 
 import com.bookfair.user.dto.AuthResponse;
+import com.bookfair.user.dto.LoginRequest;
 import com.bookfair.user.dto.RegisterRequest;
 import com.bookfair.user.dto.UserResponse;
 import com.bookfair.user.entity.User;
@@ -44,6 +45,27 @@ public class UserService {
 
         return new AuthResponse(token, mapToUserResponse(savedUser));
     }
+
+    @Transactional(readOnly = true)
+    public AuthResponse login(LoginRequest request) {
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new RuntimeException("Invalid credentials"));
+
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new RuntimeException("Invalid credentials");
+        }
+
+        if (!user.getActive()) {
+            throw new RuntimeException("Account is deactivated");
+        }
+
+        String token = jwtUtil.generateToken(user.getEmail(), user.getRole().name());
+
+        return new AuthResponse(token, mapToUserResponse(user));
+    }
+
+
+
 
     private UserResponse mapToUserResponse(User user) {
         UserResponse response = new UserResponse();

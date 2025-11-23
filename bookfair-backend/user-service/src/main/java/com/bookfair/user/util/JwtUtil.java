@@ -46,6 +46,10 @@ public class JwtUtil {
         }
     }
 
+    public String extractUsername(String token) {
+        return extractEmail(token);
+    }
+
     public boolean validateToken(String token) {
         try {
             SecretKey key = Keys.hmacShaKeyFor(secret.getBytes());
@@ -56,6 +60,16 @@ public class JwtUtil {
             return true;
         } catch (Exception e) {
             log.error("Token validation failed: {}", e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean isTokenValid(String token, String email) {
+        try {
+            String tokenEmail = extractEmail(token);
+            return tokenEmail != null && tokenEmail.equals(email) && validateToken(token);
+        } catch (Exception e) {
+            log.error("Token validation failed for email {}: {}", email, e.getMessage());
             return false;
         }
     }

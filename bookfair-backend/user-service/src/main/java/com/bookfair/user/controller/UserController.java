@@ -2,6 +2,7 @@ package com.bookfair.user.controller;
 
 import com.bookfair.user.dto.AuthResponse;
 import com.bookfair.user.dto.ErrorResponse;
+import com.bookfair.user.dto.LoginRequest;
 import com.bookfair.user.dto.RegisterRequest;
 import com.bookfair.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,28 @@ public class UserController {
             }
             ErrorResponse errorResponse = new ErrorResponse(errorMessage != null ? errorMessage : "Registration failed");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+        }
+    }
+
+    @PostMapping("/auth/login")
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest request) {
+        try {
+            AuthResponse response = userService.login(request);
+            return ResponseEntity.ok(response);
+        } catch (RuntimeException e) {
+            String errorMessage = e.getMessage();
+            if (errorMessage != null && errorMessage.contains("Invalid credentials")) {
+
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body(new ErrorResponse("Invalid email or password"));
+            }
+            if (errorMessage != null && errorMessage.contains("Account is deactivated")) {
+                
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                        .body(new ErrorResponse("Account is deactivated. Please contact support."));
+            }
+            ErrorResponse errorResponse = new ErrorResponse(errorMessage != null ? errorMessage : "Login failed");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
         }
     }
 }
