@@ -6,33 +6,44 @@ import com.bookfair.reservation.dto.ReservationResponse;
 import com.bookfair.reservation.service.ReservationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
 @CrossOrigin(origins = { "http://localhost:5173", "http://localhost:5174" })
+@Slf4j
 public class ReservationController {
 
     private final ReservationService reservationService;
 
     @PostMapping("/reservations")
-    public ResponseEntity<ReservationResponse> createReservation(
-            @RequestHeader("X-User-Id") String userEmail,
-            @RequestHeader("X-User-Role") String userRole,
+    public ResponseEntity<?> createReservation(
+            @RequestHeader(value = "X-User-Id", required = false) String userEmail,
+            @RequestHeader(value = "X-User-Role", required = false) String userRole,
             @Valid @RequestBody ReservationRequest request) {
         try {
-            // In a real scenario, you would extract userId from the user service
-            // For now, we'll use a placeholder
-            Long userId = 1L; // This should come from the authenticated user
-            ReservationResponse response = reservationService.createReservation(userId, request);
+            log.info("Received reservation request - User Email: {}, User Role: {}, Stalls: {}",
+                    userEmail, userRole, request.getStallIds());
+
+            if (userEmail == null || userEmail.isEmpty()) {
+                log.error("Missing X-User-Id header");
+                return ResponseEntity.badRequest()
+                        .body(Map.of("error", "User authentication required. Missing X-User-Id header."));
+            }
+
+            ReservationResponse response = reservationService.createReservation(userEmail, request);
+            log.info("Successfully created reservation for user: {}", userEmail);
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().build();
+            log.error("Failed to create reservation for user: {}", userEmail, e);
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }
     }
 
@@ -40,8 +51,7 @@ public class ReservationController {
     public ResponseEntity<List<ReservationResponse>> getMyReservations(
             @RequestHeader("X-User-Id") String userEmail) {
         try {
-            Long userId = 1L; // Should be extracted from authenticated user
-            List<ReservationResponse> reservations = reservationService.getUserReservations(userId);
+            List<ReservationResponse> reservations = reservationService.getUserReservationsByEmail(userEmail);
             return ResponseEntity.ok(reservations);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().build();

@@ -27,7 +27,11 @@ public class ReservationService {
     private final UserClient userClient;
 
     @Transactional
-    public ReservationResponse createReservation(Long userId, ReservationRequest request) {
+    public ReservationResponse createReservation(String userEmail, ReservationRequest request) {
+        // Get user details by email
+        UserResponse user = userClient.getUserByEmail(userEmail);
+        Long userId = user.getId();
+
         // Check if user already has reservations
         List<Reservation> existingReservations = reservationRepository.findByUserId(userId);
         long totalStalls = existingReservations.stream()
@@ -55,9 +59,8 @@ public class ReservationService {
             }
         });
 
-        // Get user details and send notification via Kafka
+        // Send notification via Kafka
         try {
-            UserResponse user = userClient.getUserById(userId);
             ReservationEvent event = new ReservationEvent(
                     savedReservation.getId(),
                     userId,
@@ -78,6 +81,12 @@ public class ReservationService {
         return reservationRepository.findByUserId(userId).stream()
                 .map(this::mapToReservationResponse)
                 .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<ReservationResponse> getUserReservationsByEmail(String userEmail) {
+        UserResponse user = userClient.getUserByEmail(userEmail);
+        return getUserReservations(user.getId());
     }
 
     @Transactional(readOnly = true)
