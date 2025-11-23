@@ -32,6 +32,10 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
 
+qr:
+  verification:
+    url: http://localhost:5173/verify
+
 logging:
   level:
     com.bookfair: DEBUG
