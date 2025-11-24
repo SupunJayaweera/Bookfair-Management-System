@@ -4,16 +4,23 @@ import { useAuth } from "../context/AuthContext";
 const Navbar = () => {
   const { logout, user } = useAuth();
 
+  const handleLogout = (e) => {
+    e.target.classList.add('btn-glow');
+    setTimeout(() => {
+      logout();
+    }, 500);
+  };
+
   return (
     <nav className="navbar">
       <div className="navbar-content">
-        <h1>🏢 Employee Portal - Bookfair Management</h1>
+        <h1>Employee Portal - Bookfair Management</h1>
         <div className="navbar-links">
           <Link to="/dashboard">Dashboard</Link>
           <Link to="/stalls">Stall Management</Link>
           <Link to="/reservations">Reservations</Link>
           <span>Employee: {user?.contactPerson || "Admin"}</span>
-          <button className="btn-logout" onClick={logout}>
+          <button className="btn-logout" onClick={handleLogout}>
             Logout
           </button>
         </div>

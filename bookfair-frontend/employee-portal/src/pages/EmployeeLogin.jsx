@@ -21,15 +21,20 @@ const EmployeeLogin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      await login(formData.email, formData.password);
-      toast.success("Login successful!");
-      navigate("/dashboard");
-    } catch (error) {
-      toast.error(
-        error.message || "Login failed. Please check your credentials."
-      );
-    }
+    const submitButton = e.target.querySelector('button[type="submit"]');
+    submitButton.classList.add('btn-glow');
+    setTimeout(async () => {
+      try {
+        await login(formData.email, formData.password);
+        toast.success("Login successful!");
+        navigate("/dashboard");
+      } catch (error) {
+        toast.error(
+          error.message || "Login failed. Please check your credentials."
+        );
+        submitButton.classList.remove('btn-glow');
+      }
+    }, 500);
   };
 
   return (
