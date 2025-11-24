@@ -7,7 +7,21 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%);
+  /* background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); */
+  background: url('./assets/bf_bg_1.jpg') no-repeat center center;
+  background-size: cover;
+  position: relative;
+}
+
+.auth-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(102, 126, 234, 0.7);
+  z-index: 1;
 }
 
 .auth-card {
@@ -17,6 +31,8 @@
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
   width: 100%;
   max-width: 450px;
+  position: relative;
+  z-index: 2;
 }
 
 .auth-card h1 {
@@ -28,7 +44,7 @@
 .employee-badge {
   text-align: center;
   padding: 10px;
-  background: #e74c3c;
+  background: #667eea;
   color: white;
   border-radius: 5px;
   margin-bottom: 30px;
@@ -47,7 +63,7 @@
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);  /* Changed from red gradient */
   color: white;
   width: 100%;
   padding: 12px;
@@ -56,7 +72,7 @@
 }
 
 .navbar {
-  background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);  /* Changed from red gradient */
   color: white;
   padding: 20px 0;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -133,7 +149,7 @@
 .stat-value {
   font-size: 48px;
   font-weight: bold;
-  color: #e74c3c;
+  color: #667eea;
   margin-bottom: 10px;
 }
 
@@ -168,7 +184,7 @@
 }
 
 .btn-secondary {
-  background: #e74c3c;
+  background: #667eea;
   color: white;
   padding: 12px 24px;
 }
@@ -302,9 +318,21 @@
 }
 
 .genre-badge {
-  background: #e74c3c;
+  background: #667eea;
   color: white;
   padding: 5px 12px;
   border-radius: 15px;
   font-size: 12px;
 }
+
+.logo-container {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.auth-logo {
+  max-width: 100px;
+  height: auto;
+  object-fit: contain;
+}
+

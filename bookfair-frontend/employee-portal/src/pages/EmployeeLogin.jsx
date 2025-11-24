@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import toast from "react-hot-toast";
+import logo from "../assets/bookfair_logo.png";
 
 const EmployeeLogin = () => {
   const [formData, setFormData] = useState({
@@ -34,7 +35,10 @@ const EmployeeLogin = () => {
   return (
     <div className="auth-container">
       <div className="auth-card">
-        <div className="employee-badge">🔐 EMPLOYEE PORTAL ACCESS</div>
+        <div className="logo-container">
+          <img src={logo} alt="Bookfair Logo" className="auth-logo" />
+        </div>
+        <div className="employee-badge">EMPLOYEE PORTAL ACCESS</div>
         <h1>Bookfair Management System</h1>
         <form onSubmit={handleSubmit}>
           <div className="form-group">

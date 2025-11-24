@@ -45,7 +45,7 @@ select {
 input:focus,
 select:focus {
   outline: none;
-  border-color: #e74c3c;
+  border-color: #667eea;
 }
 
 table {
