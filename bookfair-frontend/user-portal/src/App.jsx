@@ -1,17 +1,46 @@
-import { BrowserRouter as Router } from "react-router-dom";
-import Navbar from "./components/Navbar";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+
+import { Toaster } from "react-hot-toast";
+import { AuthProvider } from "./context/AuthContext";
+
+import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
+import PrivateRoute from "./components/PrivateRoute";
+
 import "./App.css";
 
 function App() {
   return (
-    <Router>
-      <div className="App">
-        <Navbar />
-        <h2 style={{ textAlign: "center", marginTop: "40px" }}>
-          Frontend Setup – Navbar Preview
-        </h2>
-      </div>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <div className="App">
+          <Toaster position="top-right" />
+
+          <Routes>
+            {/* Login Page */}
+            <Route path="/login" element={<Login />} />
+
+            {/* Dashboard */}
+            <Route
+              path="/dashboard"
+              element={
+                <PrivateRoute>
+                  <Dashboard />
+                </PrivateRoute>
+              }
+            />
+
+            {/* Default route → redirect to login */}
+            <Route path="/" element={<Navigate to="/login" replace />} />
+          </Routes>
+        </div>
+      </Router>
+    </AuthProvider>
   );
 }
 
