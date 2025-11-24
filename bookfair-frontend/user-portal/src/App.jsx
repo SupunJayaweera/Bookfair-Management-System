@@ -9,6 +9,7 @@ import { Toaster } from "react-hot-toast";
 import { AuthProvider } from "./context/AuthContext";
 
 import Login from "./pages/Login";
+import Register from "./pages/Register";   // <-- added
 import Dashboard from "./pages/Dashboard";
 import PrivateRoute from "./components/PrivateRoute";
 
@@ -24,6 +25,9 @@ function App() {
           <Routes>
             {/* Login Page */}
             <Route path="/login" element={<Login />} />
+
+            {/* Register Page */}
+            <Route path="/register" element={<Register />} />   {/* <-- added */}
 
             {/* Dashboard */}
             <Route
