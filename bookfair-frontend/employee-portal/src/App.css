@@ -20,7 +20,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(102, 126, 234, 0.4);
+  background: rgba(54, 67, 168, 0.4);
   z-index: 1;
 }
 
@@ -44,7 +44,7 @@
 .employee-badge {
   text-align: center;
   padding: 10px;
-  background: #667eea;
+  background: #3643a8;
   color: white;
   border-radius: 5px;
   margin-bottom: 30px;
@@ -63,7 +63,7 @@
 }
 
 .btn-primary {
-  background: #667eea;
+  background: #3643a8;
   color: white;
   width: 100%;
   padding: 12px;
@@ -77,7 +77,7 @@
 }
 
 .navbar {
-  background: #667eea;
+  background: #3643a8;
   color: white;
   padding: 20px 0;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -201,7 +201,7 @@
 .stat-value {
   font-size: 48px;
   font-weight: bold;
-  color: #667eea;
+  color: #3643a8;
   margin-bottom: 10px;
 }
 
@@ -245,7 +245,7 @@
 }
 
 .btn-secondary {
-  background: #667eea;
+  background: #3643a8;
   color: white;
   padding: 12px 24px;
   margin-top: 20px;
@@ -258,10 +258,10 @@
 
 @keyframes glow {
   0%, 100% {
-    box-shadow: 0 0 5px rgba(102, 126, 234, 0.5);
+    box-shadow: 0 0 5px rgba(54, 67, 168, 0.5);
   }
   50% {
-    box-shadow: 0 0 20px rgba(102, 126, 234, 0.8), 0 0 30px rgba(102, 126, 234, 0.6);
+    box-shadow: 0 0 20px rgba(54, 67, 168, 0.8), 0 0 30px rgba(54, 67, 168, 0.6);
   }
 }
 
@@ -305,7 +305,7 @@
 
 .filter-group select:hover,
 .filter-group input:hover {
-  border-color: #667eea;
+  border-color: #3643a8;
 }
 
 .table-container {
@@ -418,7 +418,7 @@
 }
 
 .genre-badge {
-  background: #667eea;
+  background: #3643a8;
   color: white;
   padding: 5px 12px;
   border-radius: 15px;
