@@ -12,6 +12,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";   // <-- added
 import Dashboard from "./pages/Dashboard";
 import PrivateRoute from "./components/PrivateRoute";
+import MyReservations from "./pages/MyReservations"; 
 
 import "./App.css";
 
