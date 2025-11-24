@@ -50,14 +50,19 @@ const StallManagement = () => {
     setFilteredStalls(filtered);
   };
 
-  const handleInitializeStalls = async () => {
-    try {
-      await axios.post("/api/stalls/initialize");
-      toast.success("Stalls initialized successfully");
-      fetchStalls();
-    } catch (error) {
-      toast.error("Failed to initialize stalls");
-    }
+  const handleInitializeStalls = async (e) => {
+    e.target.classList.add('btn-glow');
+    setTimeout(async () => {
+      try {
+        await axios.post("/api/stalls/initialize");
+        toast.success("Stalls initialized successfully");
+        fetchStalls();
+      } catch (error) {
+        toast.error("Failed to initialize stalls");
+      } finally {
+        e.target.classList.remove('btn-glow');
+      }
+    }, 500);
   };
 
   return (
