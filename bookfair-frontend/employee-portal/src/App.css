@@ -8,7 +8,7 @@
   align-items: center;
   min-height: 100vh;
   /* background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); */
-  background: url('./assets/bf_bg_1.jpg') no-repeat center center;
+  background: url('./assets/bf_bg_2.jpg') no-repeat center center;
   background-size: cover;
   position: relative;
 }
@@ -20,7 +20,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(102, 126, 234, 0.7);
+  background: rgba(102, 126, 234, 0.5);
   z-index: 1;
 }
 
