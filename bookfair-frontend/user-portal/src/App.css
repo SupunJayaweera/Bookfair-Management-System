@@ -109,6 +109,16 @@
   line-height: 1.6;
 }
 
+.legend {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 20px;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
 
 .navbar {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
