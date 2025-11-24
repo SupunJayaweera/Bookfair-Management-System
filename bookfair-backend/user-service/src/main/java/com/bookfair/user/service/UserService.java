@@ -64,8 +64,28 @@ public class UserService {
         return new AuthResponse(token, mapToUserResponse(user));
     }
 
+    @Transactional(readOnly = true)
+    public UserResponse getCurrentUser(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        return mapToUserResponse(user);
+    }
 
+    @Transactional(readOnly = true)
+    public UserResponse getUserById(Long id, String currentUserEmail) {
+        User requestedUser = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usre not found"));
 
+        User currentUser = userRepository.findByEmail(currentUserEmail)
+                .orElseThrow(() -> new RuntimeException(" user not found"));
+
+        if (!requestedUser.getEmail().equals(currentUserEmail) && 
+            !currentUser.getRole().equals(UserRole.ADMIN)) {
+            throw new RuntimeException("Unauthorized");
+        }
+        
+        return mapToUserResponse(requestedUser);
+    }
 
     private UserResponse mapToUserResponse(User user) {
         UserResponse response = new UserResponse();
