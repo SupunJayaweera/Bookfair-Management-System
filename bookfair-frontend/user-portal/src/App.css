@@ -63,18 +63,21 @@
 }
 
 
-
 .dashboard-container {
   padding: 40px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .dashboard-header {
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 50px;
 }
 
 .dashboard-header h2 {
-  color: #2c3e50;
+  color: #34495e;
+  font-size: 32px;
+  font-weight: 700;
   margin-bottom: 10px;
 }
 
@@ -86,28 +89,51 @@
 }
 
 .dashboard-card {
-  background: white;
+  background: linear-gradient(145deg, #ffffff 0%, #f0f4f8 100%);
   padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
   text-align: center;
-  transition: transform 0.3s;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
 
 .dashboard-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-8px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
 }
 
 .dashboard-card h3 {
   color: #2c3e50;
   margin-bottom: 15px;
+  font-size: 22px;
 }
 
 .dashboard-card p {
   color: #666;
   margin-bottom: 20px;
   line-height: 1.6;
+  font-size: 15px;
 }
+
+/* Example pill button inside card */
+.dashboard-card a.btn {
+  display: inline-block;
+  padding: 10px 25px;
+  border-radius: 999px;
+  background: #6a11cb;
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.dashboard-card a.btn:hover {
+  background: #2575fc;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+
 
 .legend {
   display: flex;
