@@ -20,7 +20,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(102, 126, 234, 0.5);
+  background: rgba(102, 126, 234, 0.4);
   z-index: 1;
 }
 
@@ -63,7 +63,7 @@
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);  /* Changed from red gradient */
+  background: #667eea;
   color: white;
   width: 100%;
   padding: 12px;
@@ -72,7 +72,7 @@
 }
 
 .navbar {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);  /* Changed from red gradient */
+  background: #667eea;
   color: white;
   padding: 20px 0;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -128,7 +128,15 @@
 
 .dashboard-header h2 {
   color: #2c3e50;
-  margin-bottom: 10px;
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.dashboard-header p {
+  color: #7f8c8d;
+  font-size: 18px;
+  font-weight: 400;
 }
 
 .stats-grid {
@@ -144,6 +152,12 @@
   border-radius: 10px;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
   text-align: center;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
 }
 
 .stat-value {
@@ -170,6 +184,14 @@
   border-radius: 10px;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
   text-align: center;
+  transition: transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  min-height: 250px;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-5px);
 }
 
 .dashboard-card h3 {
@@ -179,14 +201,30 @@
 
 .dashboard-card p {
   color: #666;
-  margin-bottom: 20px;
   line-height: 1.6;
+  flex-grow: 1;
+  margin-bottom: 0;
 }
 
 .btn-secondary {
   background: #667eea;
   color: white;
   padding: 12px 24px;
+  margin-top: 20px;
+  transition: box-shadow 0.3s ease;
+}
+
+.btn-secondary.btn-glow {
+  animation: glow 0.5s ease-in-out;
+}
+
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(102, 126, 234, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(102, 126, 234, 0.8), 0 0 30px rgba(102, 126, 234, 0.6);
+  }
 }
 
 .page-container {
@@ -279,6 +317,20 @@
   background: #27ae60;
   color: white;
   padding: 10px 20px;
+  transition: box-shadow 0.3s ease;
+}
+
+.btn-init.btn-glow {
+  animation: glow-green 0.5s ease-in-out;
+}
+
+@keyframes glow-green {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(39, 174, 96, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(39, 174, 96, 0.8), 0 0 30px rgba(39, 174, 96, 0.6);
+  }
 }
 
 .empty-state {
@@ -335,4 +387,3 @@
   height: auto;
   object-fit: contain;
 }
-
