@@ -27,7 +27,11 @@ public class ReservationService {
     private final UserClient userClient;
 
     @Transactional
-    public ReservationResponse createReservation(Long userId, ReservationRequest request) {
+    public ReservationResponse createReservation(String userEmail, ReservationRequest request) {
+        // Get user details by email
+        UserResponse user = userClient.getUserByEmail(userEmail);
+        Long userId = user.getId();
+
         // Check if user already has reservations
         List<Reservation> existingReservations = reservationRepository.findByUserId(userId);
         long totalStalls = existingReservations.stream()
@@ -42,9 +46,14 @@ public class ReservationService {
         Reservation reservation = new Reservation();
         reservation.setUserId(userId);
         reservation.setStallIds(request.getStallIds());
-        reservation.setQrCode(qrCodeService.generateQRCode());
+        // Temporarily set empty QR code
+        reservation.setQrCode("");
 
         Reservation savedReservation = reservationRepository.save(reservation);
+
+        // Now generate QR code with the reservation ID
+        savedReservation.setQrCode(qrCodeService.generateQRCode(savedReservation.getId()));
+        savedReservation = reservationRepository.save(savedReservation);
 
         // Update stall availability
         request.getStallIds().forEach(stallId -> {
@@ -55,9 +64,8 @@ public class ReservationService {
             }
         });
 
-        // Get user details and send notification via Kafka
+        // Send notification via Kafka
         try {
-            UserResponse user = userClient.getUserById(userId);
             ReservationEvent event = new ReservationEvent(
                     savedReservation.getId(),
                     userId,
@@ -81,6 +89,12 @@ public class ReservationService {
     }
 
     @Transactional(readOnly = true)
+    public List<ReservationResponse> getUserReservationsByEmail(String userEmail) {
+        UserResponse user = userClient.getUserByEmail(userEmail);
+        return getUserReservations(user.getId());
+    }
+
+    @Transactional(readOnly = true)
     public List<ReservationResponse> getAllReservations() {
         return reservationRepository.findAll().stream()
                 .map(this::mapToReservationResponse)
@@ -91,6 +105,13 @@ public class ReservationService {
     public ReservationResponse getReservationById(Long id) {
         Reservation reservation = reservationRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Reservation not found"));
+        return mapToReservationResponse(reservation);
+    }
+
+    @Transactional(readOnly = true)
+    public ReservationResponse getReservationByQRCode(String qrCode) {
+        Reservation reservation = reservationRepository.findByQrCode(qrCode)
+                .orElseThrow(() -> new RuntimeException("Invalid QR code"));
         return mapToReservationResponse(reservation);
     }
 

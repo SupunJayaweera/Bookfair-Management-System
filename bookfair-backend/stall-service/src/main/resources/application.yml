@@ -1,11 +1,11 @@
 server:
-  port: 8083
+  port: 8082
 
 spring:
   application:
-    name: reservation-service
+    name: stall-service
   datasource:
-    url: jdbc:mysql://localhost:3306/bookfair_reservations?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://localhost:3306/bookfair_stalls?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
     username: root
     password: root123
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -17,13 +17,6 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
         format_sql: true
-  kafka:
-    bootstrap-servers: localhost:9093
-    producer:
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
-      properties:
-        spring.json.type.mapping: reservationEvent:com.bookfair.reservation.event.ReservationEvent
 
 eureka:
   client:
@@ -34,10 +27,6 @@ eureka:
   instance:
     prefer-ip-address: true
     instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${server.port}
-
-qr:
-  verification:
-    url: http://localhost:5173/verify
 
 logging:
   level:
