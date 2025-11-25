@@ -8,7 +8,6 @@ import { Toaster } from "react-hot-toast";
 import { AuthProvider } from "./context/AuthContext";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import StallSelection from "./pages/StallSelection";
 import MyReservations from "./pages/MyReservations";
@@ -31,22 +30,6 @@ function App() {
               element={
                 <PrivateRoute>
                   <Dashboard />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/stalls"
-              element={
-                <PrivateRoute>
-                  <StallSelection />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/my-reservations"
-              element={
-                <PrivateRoute>
-                  <MyReservations />
                 </PrivateRoute>
               }
             />

@@ -29,7 +29,7 @@ eureka:
     instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${server.port}
 
 jwt:
-  secret: Rv7*WHGkp9v#V*P[+R{f{M%MqvV2uvISP$0jY)0tadnaobrgosiijeirnnfdggg10a3
+  secret: bookfair2024SecretKeyForJWTTokenGenerationAndValidation1234567890
   expiration: 86400000
 
 logging:

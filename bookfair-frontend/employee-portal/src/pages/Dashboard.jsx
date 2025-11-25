@@ -12,13 +12,6 @@ const Dashboard = () => {
   });
   const navigate = useNavigate();
 
-  const handleNavigation = (e, path) => {
-    e.target.classList.add('btn-glow');
-    setTimeout(() => {
-      navigate(path);
-    }, 500);
-  };
-
   useEffect(() => {
     fetchStats();
   }, []);
@@ -74,35 +67,35 @@ const Dashboard = () => {
 
         <div className="dashboard-cards">
           <div className="dashboard-card">
-            <h3>Stall Management</h3>
+            <h3>📊 Stall Management</h3>
             <p>
               View all stalls, check availability status, and initialize stall
               data for the exhibition venue.
             </p>
             <button
               className="btn-secondary"
-              onClick={(e) => handleNavigation(e, "/stalls")}
+              onClick={() => navigate("/stalls")}
             >
               Manage Stalls
             </button>
           </div>
 
           <div className="dashboard-card">
-            <h3>Reservation Tracking</h3>
+            <h3>📋 Reservation Tracking</h3>
             <p>
               Monitor all reservations made by vendors and publishers. View
               detailed information about each reservation.
             </p>
             <button
               className="btn-secondary"
-              onClick={(e) => handleNavigation(e, "/reservations")}
+              onClick={() => navigate("/reservations")}
             >
               View Reservations
             </button>
           </div>
 
           <div className="dashboard-card">
-            <h3>Reports & Analytics</h3>
+            <h3>📈 Reports & Analytics</h3>
             <p>
               Generate reports on stall utilization, revenue projections, and
               exhibitor demographics.
