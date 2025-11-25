@@ -40,12 +40,15 @@ select {
   border-radius: 5px;
   font-size: 16px;
   width: 100%;
+  transition: all 1s ease;
 }
 
 input:focus,
 select:focus {
   outline: none;
-  border-color: #e74c3c;
+  border-color: #3643a8;
+  box-shadow: 0 0 0 3px rgba(54, 67, 168, 0.1);
+  transform: translateY(-1px);
 }
 
 table {
