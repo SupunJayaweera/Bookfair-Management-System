@@ -4,7 +4,39 @@ server:
 spring:
   application:
     name: notification-service
-  
-  profiles:
-    active: ${SPRING_PROFILES_ACTIVE:dev}
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: jayaweeraspn@gmail.com
+    password: ykdjranoujpxzolp
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+  kafka:
+    bootstrap-servers: localhost:9093
+    consumer:
+      group-id: notification-service-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
+        spring.json.type.mapping: reservationEvent:com.bookfair.notification.event.ReservationEvent
 
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${server.port}
+
+logging:
+  level:
+    com.bookfair: DEBUG

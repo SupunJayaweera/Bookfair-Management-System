@@ -7,7 +7,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/bookfair_stalls?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
     username: root
-    password: abcd
+    password: root123
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
