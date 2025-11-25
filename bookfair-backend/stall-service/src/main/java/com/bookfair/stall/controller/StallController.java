@@ -1,12 +1,9 @@
 package com.bookfair.stall.controller;
 
-import com.bookfair.stall.dto.StallRequest;
 import com.bookfair.stall.dto.StallResponse;
 import com.bookfair.stall.entity.StallSize;
 import com.bookfair.stall.service.StallService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -57,38 +54,6 @@ public class StallController {
             return ResponseEntity.ok().build();
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
-        }
-    }
-
-    @PostMapping
-    public ResponseEntity<StallResponse> createStall(@Valid @RequestBody StallRequest request) {
-        try {
-            StallResponse stall = stallService.createStall(request);
-            return ResponseEntity.status(HttpStatus.CREATED).body(stall);
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().build();
-        }
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<StallResponse> updateStall(
-            @PathVariable Long id,
-            @Valid @RequestBody StallRequest request) {
-        try {
-            StallResponse stall = stallService.updateStall(id, request);
-            return ResponseEntity.ok(stall);
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteStall(@PathVariable Long id) {
-        try {
-            stallService.deleteStall(id);
-            return ResponseEntity.noContent().build();
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().build();
         }
     }
 

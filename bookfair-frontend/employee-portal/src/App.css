@@ -425,6 +425,16 @@
   font-size: 12px;
 }
 
+
+
+
+
+
+
+
+
+
+
 .logo-container {
   text-align: center;
   margin-bottom: 20px;
@@ -436,3 +446,22 @@
   object-fit: contain;
 }
 
+/* .auth-card {
+  background: white;
+  padding: 50px;
+  border-radius: 10px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 450px;
+}
+
+.auth-card {
+  background: white;
+  padding: 50px;
+  border-radius: 10px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 450px;
+  position: relative;
+  z-index: 2;
+} */

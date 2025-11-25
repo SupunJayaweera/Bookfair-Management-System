@@ -1,6 +1,5 @@
 package com.bookfair.stall.service;
 
-import com.bookfair.stall.dto.StallRequest;
 import com.bookfair.stall.dto.StallResponse;
 import com.bookfair.stall.entity.Stall;
 import com.bookfair.stall.entity.StallSize;
@@ -52,67 +51,6 @@ public class StallService {
                 .orElseThrow(() -> new RuntimeException("Stall not found"));
         stall.setAvailable(available);
         stallRepository.save(stall);
-    }
-
-    @Transactional
-    public StallResponse createStall(StallRequest request) {
-        // Check if stall name already exists
-        if (stallRepository.findByStallName(request.getStallName()).isPresent()) {
-            throw new RuntimeException("Stall with name '" + request.getStallName() + "' already exists");
-        }
-
-        Stall stall = new Stall();
-        stall.setStallName(request.getStallName());
-        stall.setSize(request.getSize());
-        stall.setWidth(request.getWidth());
-        stall.setLength(request.getLength());
-        stall.setPricePerDay(request.getPricePerDay());
-        stall.setPositionX(request.getPositionX());
-        stall.setPositionY(request.getPositionY());
-        stall.setAvailable(request.getAvailable() != null ? request.getAvailable() : true);
-        stall.setDescription(request.getDescription());
-
-        Stall savedStall = stallRepository.save(stall);
-        return mapToStallResponse(savedStall);
-    }
-
-    @Transactional
-    public StallResponse updateStall(Long id, StallRequest request) {
-        Stall stall = stallRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Stall not found"));
-
-        // Check if stall name is being changed and if new name already exists
-        if (!stall.getStallName().equals(request.getStallName())) {
-            if (stallRepository.findByStallName(request.getStallName()).isPresent()) {
-                throw new RuntimeException("Stall with name '" + request.getStallName() + "' already exists");
-            }
-        }
-
-        stall.setStallName(request.getStallName());
-        stall.setSize(request.getSize());
-        stall.setWidth(request.getWidth());
-        stall.setLength(request.getLength());
-        stall.setPricePerDay(request.getPricePerDay());
-        stall.setPositionX(request.getPositionX());
-        stall.setPositionY(request.getPositionY());
-        stall.setAvailable(request.getAvailable() != null ? request.getAvailable() : stall.getAvailable());
-        stall.setDescription(request.getDescription());
-
-        Stall updatedStall = stallRepository.save(stall);
-        return mapToStallResponse(updatedStall);
-    }
-
-    @Transactional
-    public void deleteStall(Long id) {
-        Stall stall = stallRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Stall not found"));
-        
-        // Check if stall is available before deleting
-        if (!stall.getAvailable()) {
-            throw new RuntimeException("Cannot delete stall. Stall is currently reserved.");
-        }
-        
-        stallRepository.delete(stall);
     }
 
     @Transactional
