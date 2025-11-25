@@ -1,8 +1,5 @@
 package com.bookfair.notification.service;
 
-import com.bookfair.notification.exception.EmailSendException;
-import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
-import io.github.resilience4j.retry.annotation.Retry;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,15 +19,13 @@ public class EmailService {
     private final JavaMailSender mailSender;
     private final QRCodeService qrCodeService;
 
-    @Value("${spring.mail.username:}")
+    @Value("${spring.mail.username}")
     private String fromEmail;
 
-    @CircuitBreaker(name = "emailService", fallbackMethod = "sendEmailFallback")
-    @Retry(name = "emailService")
     public void sendReservationConfirmation(String toEmail, Long reservationId, Set<Long> stallIds, String qrCode) {
         try {
             MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
             helper.setFrom(fromEmail);
             helper.setTo(toEmail);
@@ -44,20 +39,11 @@ public class EmailService {
             helper.addAttachment("qr-code.png", new ByteArrayResource(qrCodeImage));
 
             mailSender.send(message);
-            log.info("Reservation confirmation email sent successfully to {} for reservation #{}", toEmail, reservationId);
+            log.info("Reservation confirmation email sent to {}", toEmail);
         } catch (Exception e) {
-            log.error("Failed to send email to {} for reservation #{}", toEmail, reservationId, e);
-            throw new EmailSendException("Failed to send email to " + toEmail, e);
+            log.error("Failed to send email to {}", toEmail, e);
+            throw new RuntimeException("Failed to send email", e);
         }
-    }
-
-    private void sendEmailFallback(String toEmail, Long reservationId, Set<Long> stallIds, String qrCode, Exception ex) {
-        log.error("Circuit breaker activated. Fallback triggered for email to {} for reservation #{}", toEmail, reservationId);
-        // In production, you might want to:
-        // 1. Store the notification in a dead letter queue
-        // 2. Save to database for manual retry
-        // 3. Send to alternative notification channel (SMS, push notification)
-        throw new EmailSendException("Email service is currently unavailable. Notification saved for retry.", ex);
     }
 
     private String buildEmailContent(Long reservationId, Set<Long> stallIds, String qrCode) {
