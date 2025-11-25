@@ -40,12 +40,20 @@ const StallSelection = () => {
   const handleConfirmReservation = async () => {
     try {
       const stallIds = selectedStalls.map((s) => s.id);
-      await axios.post("/api/reservations", { stallIds });
+      console.log("Sending reservation request:", { stallIds });
+      const response = await axios.post("/api/reservations", { stallIds });
+      console.log("Reservation response:", response.data);
       toast.success("Reservation confirmed! Check your email for QR code.");
       setShowConfirmModal(false);
       navigate("/my-reservations");
     } catch (error) {
-      toast.error(error.response?.data?.message || "Reservation failed");
+      console.error("Reservation error:", error);
+      console.error("Error response:", error.response?.data);
+      const errorMessage =
+        error.response?.data?.error ||
+        error.response?.data?.message ||
+        "Reservation failed";
+      toast.error(errorMessage);
     }
   };
 
