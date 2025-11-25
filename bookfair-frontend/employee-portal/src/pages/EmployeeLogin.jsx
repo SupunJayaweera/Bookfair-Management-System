@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import toast from "react-hot-toast";
+import logo from "../assets/bookfair_logo.png";
 
 const EmployeeLogin = () => {
   const [formData, setFormData] = useState({
@@ -20,21 +21,29 @@ const EmployeeLogin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      await login(formData.email, formData.password);
-      toast.success("Login successful!");
-      navigate("/dashboard");
-    } catch (error) {
-      toast.error(
-        error.message || "Login failed. Please check your credentials."
-      );
-    }
+    const submitButton = e.target.querySelector('button[type="submit"]');
+    submitButton.classList.add('btn-glow');
+    setTimeout(async () => {
+      try {
+        await login(formData.email, formData.password);
+        toast.success("Login successful!");
+        navigate("/dashboard");
+      } catch (error) {
+        toast.error(
+          error.message || "Login failed. Please check your credentials."
+        );
+        submitButton.classList.remove('btn-glow');
+      }
+    }, 500);
   };
 
   return (
     <div className="auth-container">
       <div className="auth-card">
-        <div className="employee-badge">🔐 EMPLOYEE PORTAL ACCESS</div>
+        <div className="logo-container">
+          <img src={logo} alt="Bookfair Logo" className="auth-logo" />
+        </div>
+        <div className="employee-badge">EMPLOYEE PORTAL ACCESS</div>
         <h1>Bookfair Management System</h1>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
