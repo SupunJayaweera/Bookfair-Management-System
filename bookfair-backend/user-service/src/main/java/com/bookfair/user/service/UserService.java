@@ -1,22 +1,17 @@
 package com.bookfair.user.service;
 
-import com.bookfair.user.dto.AuthResponse;
-import com.bookfair.user.dto.LoginRequest;
-import com.bookfair.user.dto.RegisterRequest;
-import com.bookfair.user.dto.UserResponse;
+import com.bookfair.user.dto.*;
 import com.bookfair.user.entity.User;
 import com.bookfair.user.entity.UserRole;
 import com.bookfair.user.repository.UserRepository;
 import com.bookfair.user.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class UserService {
 
     private final UserRepository userRepository;
@@ -28,7 +23,7 @@ public class UserService {
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new RuntimeException("Email already registered");
         }
-        
+
         User user = new User();
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
@@ -65,26 +60,17 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public UserResponse getCurrentUser(String email) {
+    public UserResponse getUserByEmail(String email) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         return mapToUserResponse(user);
     }
 
     @Transactional(readOnly = true)
-    public UserResponse getUserById(Long id, String currentUserEmail) {
-        User requestedUser = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usre not found"));
-
-        User currentUser = userRepository.findByEmail(currentUserEmail)
-                .orElseThrow(() -> new RuntimeException(" user not found"));
-
-        if (!requestedUser.getEmail().equals(currentUserEmail) && 
-            !currentUser.getRole().equals(UserRole.ADMIN)) {
-            throw new RuntimeException("Unauthorized");
-        }
-        
-        return mapToUserResponse(requestedUser);
+    public UserResponse getUserById(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        return mapToUserResponse(user);
     }
 
     private UserResponse mapToUserResponse(User user) {
